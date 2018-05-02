@@ -1,0 +1,15 @@
+<% if(render_view['view']==='home' && render_view['model']==='buku'){ %>
+	<%= 'ini halaman home' %>
+<% } else if (render_view['view']==='update' && render_view['model']==='buku'){ %>
+	<%- include views/buku/update -%>
+<% } else if (render_view['view']==='create' && render_view['model']==='buku'){ %>
+	<%- include views/buku/create -%>
+<% } else if (render_view['view']==='index' && render_view['model']==='buku'){ %>
+	<%- include views/buku/index -%>
+<% } else if (render_view['view']==='index' && render_view['model']==='anggota'){ %>
+	<%- include views/anggota/index -%>
+<% } else if (render_view['view']==='create' && render_view['model']==='anggota'){ %>
+	<%- include views/anggota/create -%>
+<% } else if (render_view['view']==='update' && render_view['model']==='anggota'){ %>
+	<%- include views/anggota/update -%>
+<% } %>

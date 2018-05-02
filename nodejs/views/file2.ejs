@@ -1,0 +1,26 @@
+<table class="table table-bordered table-hover">
+	<thead>
+		<th>No</th>
+		<th>Judul Buku</th>
+		<th>Pengarang</th>
+		<th>Penerbit</th>
+		<th>Tahun Terbit</th>
+		<th>Aksi</th>
+	</thead>
+	<tbody>
+		<% 
+			no=1;
+			result.forEach(function(value,el) { 
+		%>
+		<tr>
+			<td><%= no %></td>
+			<td><%= value['judul_buku'] %></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<% no++;
+		}); %>
+	</tbody>
+</table>
