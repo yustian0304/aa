@@ -4,6 +4,7 @@
 		<div class="col-sm-12" style="margin: 10px 0px 10px 0px;">
     		<a href="buku/create" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Tambah</a>
 		</div>
+		
 		<div class="col-sm-12" style="margin: 10px 0px 10px 0px;">
 			<table class="table table-bordered table-hover">
 				<thead>
@@ -17,21 +18,23 @@
 				<tbody>
 					<% 
 						no=1;
-						result.forEach(function(value,el) { 
+						data=JSON.parse(result);
+						<!-- result.forEach(function(value,el) {  -->
+						for(value in data) {
 					%>
 					<tr>
 						<td><%= no %></td>
-						<td><%= value['judul_buku'] %></td>
-						<td><%= value['pengarang'] %></td>
-						<td><%= value['penerbit'] %></td>
-						<td><%= value['tahun_terbit'] %></td>
+						<td><%= data[value].judul_buku %></td>
+						<td><%= data[value].pengarang %></td>
+						<td><%= data[value].penerbit %></td>
+						<td><%= data[value].tahun_terbit %></td>
 						<td style="text-align: center;width: 20%;">
-							<a href="buku/<%= value['id'] %>/update" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
-							<button class="btn btn-warning btn-xs" id="hapus" rel="<%= value['id'] %>" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-trash"></span> Hapus</button>
+							<a href="buku/<%= data[value].id %>/update" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+							<button class="btn btn-warning btn-xs" id="hapus" rel="<%= data[value].id %>" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-trash"></span> Hapus</button>
 						</td>
 					</tr>
 					<% no++;
-					}); %>
+					} %>
 				</tbody>
 			</table>
 		</div>

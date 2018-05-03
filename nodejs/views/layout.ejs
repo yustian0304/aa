@@ -53,7 +53,7 @@
 	    </div>
 	  </div>
 	</nav>
-
+ 
 	<div class="container-fluid">
 	  <div class="row content">
 	    <div class="col-sm-3 sidenav">
@@ -74,11 +74,21 @@
 	        </span>
 	      </div>
 	    </div>
-
 	    <div class="col-sm-9">
 	    	<div class="loading_new">
 	    	</div>
 	      <div class="row" style="padding-left: 15px;">
+	      	<% if(typeof  render_view['msg']!='undefined'){ %>
+	      	<div class="alert alert-success alert-dismissible" id="myAlert" style="<% if (render_view['msg'].length > 0) { %>
+			    <%= 'display: block;' %>;
+				<% } %>">
+			    <a href="#" class="close" data-dismiss="alert">&times;</a>
+			    <strong>Success!</strong> <% if (render_view['msg'].length > 0) { %>
+			    <%= render_view['msg'] %>
+				<% } %>
+
+			</div>
+			<% } %> 
 	    		<%- include ../main -%>
 	      </div>
 	    </div>
@@ -131,4 +141,32 @@
     margin-right: 10px !important;
 
 }
+
+#myAlert {
+    position: fixed;
+    display: none;
+    z-index: 500;
+    top: 10px;
+    /*left: 0;*/
+    right: 0;
+    /*background: #fde073;*/
+    text-align: center;
+         animation:signup-response 0.5s 1;
+    -webkit-animation:signup-response 0.5s 1;
+    animation-fill-mode: forwards;
+
+    animation-delay:2s;
+    -webkit-animation-delay:1s; /* Safari and Chrome */
+    -webkit-animation-fill-mode: forwards;
+    /*line-height: 2.5;*/
+    /*overflow: hidden; */
+    /*-webkit-box-shadow: 0 0 5px black;*/
+    /*-moz-box-shadow:    0 0 5px black;*/
+    /*box-shadow:         0 0 5px black;*/
+}
 </style>
+<script>
+$(document).ready(function(){
+	$("#myAlert").delay( 10 ).fadeOut( 3000 );
+});
+</script>
