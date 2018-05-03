@@ -16,8 +16,9 @@ exports.index = function(req, res) {
     if (err) throw err;
   		res.render('layout',{
         'render_view'	 :{'model':'buku','view':'index'},
-        'result'     	:result,
+        'result'     	:JSON.stringify(result),
   		});
+      console.log(JSON.stringify(result));
   	});
 };
 

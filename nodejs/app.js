@@ -1,14 +1,25 @@
 var express=require('express');
 var app=express();
 var path=require('path');
+var flash = require('connect-flash-plus');
+var sessions=require('express-session');
+var cookieParser=require('cookie-parser');
+
+
+app.use(sessions({
+  secret: 'keyboard cat',
+  cookie: { maxAge: 60000 },
+  resave:false,
+  saveUninitialized:true
+}));
+ 
+app.use(flash())
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 
 // var fs=require('fs');
 var bodyParser=require('body-parser');
-// var sessions=require('express-session');
-// var cookieParser=require('cookie-parser');
 var buku = require('./router/route');
 // var router=express.Router();
 // var session;
