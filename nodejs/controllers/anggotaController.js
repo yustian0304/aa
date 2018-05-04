@@ -59,7 +59,8 @@ exports.book_create_post = function(req, res) {
                           var sql="insert into anggota (nama_anggota,alamat,no_telepon) values ('"+fields.nama_anggota+"','"+fields.alamat+"','"+fields.no_telepon+"')";
                               db.query(sql, function (err, result) {
                               if (err) throw err;
-                            res.redirect('/anggota');
+                              req.flash('info', 'Tambah Data Berhasil');
+                              res.redirect('/anggota');
                             }); 
             }else{
                 fs.readFile(old_path, function(err, data) {
@@ -73,7 +74,8 @@ exports.book_create_post = function(req, res) {
                           var sql="insert into anggota (nama_anggota,alamat,no_telepon,foto) values ('"+fields.nama_anggota+"','"+fields.alamat+"','"+fields.no_telepon+"','"+file_name+"')";
                               db.query(sql, function (err, result) {
                               if (err) throw err;
-                            res.redirect('/anggota');
+                              req.flash('info', 'Tambah Data Berhasil');
+                              res.redirect('/anggota');
                             }); 
                         }
                   });
@@ -138,6 +140,7 @@ exports.book_update_post = function(req, res) {
                     db.query(sql, function (err, result) {
                       if (err) throw err;
                     });
+                      req.flash('info', 'Tambah Data Berhasil');
                       res.redirect('/anggota');
             }else{
                 fs.readFile(old_path, function(err, data) {
@@ -161,6 +164,7 @@ exports.book_update_post = function(req, res) {
                           db.query(sql, function (err, result) {
                             // if (err) throw err;
                           });
+                            req.flash('info', 'Ubah Data Berhasil');
                             res.redirect('/anggota');
                         }
                   });

@@ -63,7 +63,7 @@
 	        <li class="active"><a href="welcome/index.asp">User</a></li>
 	        <li><a href="http://localhost:3000/buku">Buku</a></li>
 	        <li><a href="http://localhost:3000/anggota">Anggota</a></li>
-	        <li><a href="peminjaman/index.asp">Peminjaman</a></li>
+	        <li><a href="http://localhost:3000/peminjaman">Peminjaman</a></li>
 	      </ul><br>
 	      <div class="input-group">
 	        <input type="text" class="form-control" placeholder="Search Blog..">
@@ -79,7 +79,7 @@
 	    	</div>
 	      <div class="row" style="padding-left: 15px;">
 	      	<% if(typeof  render_view['msg']!='undefined'){ %>
-	      	<div class="alert alert-success alert-dismissible" id="myAlert" style="<% if (render_view['msg'].length > 0) { %>
+	      	<div class="alert alert-info alert-dismissible" id="myAlert" style="<% if (render_view['msg'].length > 0) { %>
 			    <%= 'display: block;' %>;
 				<% } %>">
 			    <a href="#" class="close" data-dismiss="alert">&times;</a>

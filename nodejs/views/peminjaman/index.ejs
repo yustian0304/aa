@@ -2,16 +2,16 @@
     <div class="panel-heading">Panel Heading</div>
 	<div class="panel-body">
 		<div class="col-sm-12" style="margin: 10px 0px 10px 0px;">
-    		<a href="anggota/create" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Tambah</a>
+    		<a href="peminjaman/create" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Tambah</a>
 		</div>
 		<div class="col-sm-12" style="margin: 10px 0px 10px 0px;">
 			<table class="table table-bordered table-hover">
 				<thead>
 					<th>No</th>
-					<th>Nama Anggota</th>
-					<th>Alamat</th>
-					<th>No Telepon</th>
-					<th>Foto</th>
+					<th>Nama Peminjam</th>
+					<th>Tanggal Pinjam</th>
+					<th>No Faktur</th>
+					<th>Jatuh Tempo</th>
 					<th style="text-align: center;width: 20%;">Aksi</th>
 				</thead>
 				<tbody>
@@ -23,11 +23,11 @@
 					<tr>
 						<td><%= no %></td>
 						<td><%= data[value].nama_anggota %></td>
-						<td><%= data[value].alamat %></td>
-						<td><%= data[value].no_telepon %></td>
-						<td><%= data[value].foto %></td>
+						<td><%= new Date(data[value].tanggal).toISOString().replace(/T/, ' ').replace(/\..+/, '') %> </td>
+						<td><%= data[value].no_faktur %></td>
+						<td><%= data[value].jatuh_tempo %></td>
 						<td style="text-align: center;width: 20%;">
-							<a href="anggota/<%= data[value].id %>/update" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+							<a href="peminjaman/<%= data[value].id %>/update" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
 							<button class="btn btn-warning btn-xs" id="hapus" rel="<%= data[value].id %>" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-trash"></span> Hapus</button>
 						</td>
 					</tr>
@@ -49,7 +49,7 @@
         <form  action="" method="POST" id="confirm_modal">
         <div class="modal-body">
 	          <p>Apakah Anda yakin kan menghapus data ini?
-	          	<input type="hidden" name="id_anggota" value="" id="id_anggota"></p>
+	          	<input type="hidden" name="id_peminjaman" value="" id="id_peminjaman"></p>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-default">Save</button>
@@ -59,14 +59,14 @@
       </div>
       
     </div>
-  </div>
+</div>
 
 
 <script type="text/javascript">
 // $(document).ready(function(){
 $(document).on('click','#hapus',function(){
-	$('#id_anggota').val($(this).attr('rel'));
-	$('#confirm_modal').attr('action','anggota/'+$(this).attr('rel')+'/delete');
+	$('#id_peminjaman').val($(this).attr('rel'));
+	$('#confirm_modal').attr('action','peminjaman/'+$(this).attr('rel')+'/delete');
 });
 // });
 </script>

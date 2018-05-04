@@ -12,4 +12,8 @@
 	<%- include views/anggota/create -%>
 <% } else if (render_view['view']==='update' && render_view['model']==='anggota'){ %>
 	<%- include views/anggota/update -%>
+<% } else if (render_view['view']==='index' && render_view['model']==='peminjaman'){ %>
+	<%- include views/peminjaman/index -%>
+<% } else if (render_view['view']==='create' && render_view['model']==='peminjaman'){ %>
+	<%- include views/peminjaman/create -%>
 <% } %>

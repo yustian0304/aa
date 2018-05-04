@@ -2,21 +2,23 @@
 var db = require('../koneksi.js');
 
 // Display home  of all Authors.
-exports.home = function(req, res) {
-    // res.send('NOT IMPLEMENTED: Book list')
-    res.render('layout',{
-        	'render_view'	:{'model':'buku','view':'home'},
-  			'result'     	:'welcome',
-  		});
-};
+// exports.home = function(req, res) {
+//     // res.send('NOT IMPLEMENTED: Book list')
+//     res.render('layout',{
+//         	'render_view'	:{'model':'buku','view':'home'},
+//   			'result'     	:'welcome',
+//   		});
+// };
 
 // Display list of all Authors.
 exports.index = function(req, res) {
-	db.query("SELECT * FROM buku", function (err, result, fields) {
+	// res.send('NOT IMPLEMENTED: Author All');
+  db.query("SELECT * FROM peminjaman a "+
+           "inner join  anggota b on a.id_anggota =b.id", function (err, result, fields) {
     if (err) throw err;
   		res.render('layout',{
-        'render_view'	 :{'model':'buku','view':'index'},
-        'result'     	:JSON.stringify(result),
+        'render_view'	 :{'model':'peminjaman','view':'index'},
+        'result'     	 :JSON.stringify(result),
   		});
      
   	});
@@ -30,10 +32,13 @@ exports.book_detail = function(req, res) {
 // Display Author create form on GET.
 exports.book_create_get = function(req, res) {
     // res.send('NOT IMPLEMENTED: Author create GET');
+    db.query("select*from buku where status='1'",function (err, result, fields) {
+    if (err) throw err;
     res.render('layout',{
-        	'render_view'	:{'model':'buku','view':'create'},
-  			'result'     	:'welcome',
-  		});
+          'render_view' :{'model':'peminjaman','view':'create'},
+          'result'      :JSON.stringify(result),
+      });
+  });
 };
 
 // Handle Author create on POST.
