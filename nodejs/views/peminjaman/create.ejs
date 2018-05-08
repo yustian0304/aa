@@ -1,43 +1,53 @@
 <div class="panel panel-default">
     <div class="panel-heading">Panel Heading</div>
 	<div class="panel-body">
-		<form  action="" method="POST" id="create_anggota" class="form-horizontal" enctype="multipart/form-data">
+		<form  action="" method="POST" id="create_anggota" class="form-horizontal">
         	<div class="form-group" style="display: none;">
 			    <label class="control-label col-sm-2" for="id_anggota">Id Anggota</label>
-			    <div class="col-sm-10">
-        		  <input type="text" class="form-control" name="id_anggota" value="" id="id_anggota">
+			    <div class="col-sm-6">
+        		  <input type="text" class="form-control" name="id_anggota" value="1" id="id_anggota">
 			    </div>
 			</div>
 
 			<div class="form-group">
 			    <label class="control-label col-sm-2" for="nama_anggota">Nama Anggota</label>
-			    <div class="col-sm-10">
-        		  <input type="text" class="form-control" name="nama_anggota" value="" id="nama_anggota">
+			    <div class="col-sm-4">
+        		  <div class="input-group">
+        		  		<input type="text" class="form-control" name="nama_anggota" value="" id="nama_anggota">
+					   	<div class="input-group-btn">
+					      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalAnggota" data-backdrop="static" data-keyboard="false" >
+					        <i class="glyphicon glyphicon-user"></i>
+					      </button>
+					    </div>
+				  </div>
 			    </div>
 			</div>
 
 			<div class="form-group">
 			    <label class="control-label col-sm-2" for="tanggal">Tanggal Pinjam</label>
-			    <div class="col-sm-10">
-        		  <input type="text" class="form-control" name="tanggal" value="" id="tanggal">
-			    </div>
+			    <div class="span3 col-md-3" id="sandbox-container">
+			    	<div class="input-group date">
+  					<input type="text" class="form-control" name="tanggal" value="" id="tanggal">
+  					<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+					</div>
+				</div>
 			</div>
 
 			<div class="form-group">
 			    <label class="control-label col-sm-2" for="no_faktur">No Faktur</label>
-			    <div class="col-sm-10">
+			    <div class="col-sm-4">
         		  <input type="text" class="form-control" name="no_faktur" value="" id="no_faktur">
 			    </div>
 			</div>
 
 			<div class="form-group">
 			    <label class="control-label col-sm-2" for="id_buku">Buku</label>
-			    <div class="col-sm-10">
+			    <div class="col-sm-4">
 			      <div class="input-group">
-        		  		<input type="text" class="form-control" name="id_buku" value="" id="id_buku">
+        		  		<input type="text" class="form-control" name="id_buku" value="" id="id_buku" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false">
 					   	<div class="input-group-btn">
-					      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">
-					        <i class="glyphicon glyphicon-search"></i>
+					      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false">
+					        <i class="glyphicon glyphicon-book"></i>
 					      </button>
 					    </div>
 				  </div>
@@ -50,8 +60,8 @@
 					<th>Judul Buku</th>
 					<th>Pengarang</th>
 					<th>Penerbit</th>
-					<th>jumlah</th>
-					<th>aksi</th>
+					<th style="text-align:center;">jumlah</th>
+					<th style="text-align:center;">aksi</th>
 				</thead>
 				<tbody class="tmp_buku">
 					
@@ -71,40 +81,106 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Buku</h4>
         </div>
         <div class="modal-body">
 	          <p>
-	          	<table class="table table-bordered table-hover">
+	          	<table class="table table-bordered table-hover" id="table_buku">
 					<thead>
-						<th>No</th>
+						<th style="width:10%; text-align:center;">No</th>
 						<th>Judul Buku</th>
-						<th>aksi <input type="checkbox" name="ck_buku" class="checkbox select_all"</th>
+						<th style="width:10%; text-align:center;"><input type="checkbox" name="ck_buku" class="select_all"></th>
 					</thead>
 					<tbody class="modal_buku">
-						<% data=JSON.parse(result); 
+						<% 
+							no=1;
+							data=JSON.parse(result); 
 							for(value in data){
 						%>
 						<tr>
-							<td><%= data[value].id %></td>
+							<td style="width:10%; text-align:center;"><%= no %></td>
 							<td><%= data[value].judul_buku %></td>
-							<td><input type="checkbox" name="ck_buku" class="checkbox select_one"  value="<%= data[value].id %>" json='<%= JSON.stringify(data[value]) %>'></td>
+							<td style="width:10%; text-align: center; vertical-align: middle;"><input type="checkbox" name="ck_buku" class="select_one"  value="<%= data[value].id %>" json='<%= JSON.stringify(data[value]) %>'></td>
 						</tr>
-						<% } %>
+						<% no++; } %>
 					</tbody>
 				</table>
 	          </p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" id="tambah">Save</button>
+          <button type="button" class="btn btn-default" id="tambahBuku">Save</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">batal</button>
         </div>
       </div>
       
     </div>
 </div>
+
+<div class="modal fade" id="modalAnggota" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Anggota</h4>
+        </div>
+        <div class="modal-body" id="bd_modal_anggota">
+	          	<div class="alert alert-danger fade" id="private-alert">
+				    <!-- <a href="#" class="close force-stop" data-dismiss="alert">&times;</a> -->
+				    <strong>Warning!</strong><span class="description"></span>
+				</div>
+
+	          <p>
+	          	<table class="table table-bordered table-hover" id="table_anggota">
+					<thead>
+						<th style="width:10%; text-align:center;">No</th>
+						<th>Nama Anggota</th>
+						<th style="width:10%; text-align:center;"><input type="checkbox" name="ck_anggota" class="select_all"></th>
+					</thead>
+					<tbody class="modal_buku">
+						<%  
+							no=1;
+							data=JSON.parse(resultAnggota); 
+							for(value in data){
+						%>
+						<tr>
+							<td style="width:10%; text-align:center;"><%= no %></td>
+							<td><%= data[value].nama_anggota %></td>
+							<td style="width:10%; text-align: center; vertical-align: middle;"><input type="checkbox" name="ck_anggota" class="select_one"  value="<%= data[value].id %>" json='<%= JSON.stringify(data[value]) %>'></td>
+						</tr>
+						<% no++; } %>
+					</tbody>
+				</table>
+	          </p>
+				 	
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="tambahAnggota" data-toggle="alert" data-target="#private-alert">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">batal</button>
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+
 <script type="text/javascript">
 $(document).ready(function () {
+	$('#table_buku').DataTable({
+	    "columnDefs": [ {
+      		"targets"  : 2,
+      		"orderable": false,
+    	}]
+	});
+	$('#table_anggota').DataTable({
+		"columnDefs": [ {
+      		"targets"  : 2,
+      		"orderable": false,
+    	}]
+	});
+
+
   $('.select_all').on('click', function () {
     $(this).closest('table').find('tbody :checkbox')
       .prop('checked', this.checked)
@@ -116,10 +192,9 @@ $(document).ready(function () {
     $(this).closest('table').find('.select_all').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .select_all
   });
 
-  $(document).on('click','#tambah',function(){
-  	// var data=JSON.parse($)
-  	// var arr=$('.select_one :checked').val();
-  	var myArray=$(".select_one:checked").map(function(){
+  $(document).on('click','#tambahBuku',function(){
+  	var parentClass=$(this).closest('.modal-content');
+  	var myArray=parentClass.find(".select_one:checked").map(function(){
       return $(this).attr('json');
     }).get();
 
@@ -128,14 +203,121 @@ $(document).ready(function () {
   	var data=JSON.parse(myArray[i]);
   	// alert(data.judul_buku);
   	$('.tmp_buku').append('<tr>'+
-  					'<td></td>'+
-  					'<td>'+data.judul_buku+'</td>'+
+  					'<td><input type="hidden" name="id[]" value="'+data.id+'"></td>'+
+  					'<td><input type="hidden" name="judul_buku[]" value="'+data.judul_buku+'">'+data.judul_buku+'</td>'+
   					'<td>'+data.pengarang+'</td>'+
   					'<td>'+data.penerbit+'</td>'+
-  					'<td></td>'+
-  					'<td></td>'+
+  					'<td style="width:17%; text-align:center;">'+
+  						'<div style="padding-left: 5px;padding-right: 5px;">'+
+  							'<div class="input-group number-spinner">'+
+  								'<div class="input-group-btn data-dwn">'+
+  									'<button class="btn btn-default" type="button" data-dir="dwn"><i class="glyphicon glyphicon-minus"></i></button>'+
+					      		'</div>'+
+								'<input type="text" class="input-number form-control text-center" name="jumlah[]" value="1" min="1" max="10">'+
+								'<div class="input-group-btn data-up">'+
+  									'<button type="button" class="btn btn-default"  data-dir="up"><i class="glyphicon glyphicon-plus"></i></button>'+
+					      		'</div>'+
+							'</div>'+
+						'</div>'+	
+  					'</td>'+
+  					'<td style="width:10%;text-align:center;"><button type="button" class="btn btn-warning btn-xs" id="hapus">'+
+  					'<span class="glyphicon glyphicon-trash"></span> Hapus</button></td>'+
   			 '</tr>');
 	}
-  });
+	$('#myModal').modal('hide');
+  	});
+
+	$(document).on('focusin','#hapus',function(){
+		$(this).closest('tr').remove();
+	});
+
+	$("#myModal").on("hidden.bs.modal", function() {
+		// $(this).find("input,textarea,select").val('').end();   
+		$(this).find(".select_one,.select_all").prop('checked',false).end();   
+	});
+
+	$("#modalAnggota").on("hidden.bs.modal", function() {
+		// $(this).find("input,textarea,select").val('').end();   
+		$(this).find(".select_one,.select_all").prop('checked',false).end();   
+	});
+
+	$(document).on('mousedown','.number-spinner button',function(){
+		var btn  =$(this);
+		var input= $(this).closest('.number-spinner').find('input');
+		 btn.closest('.number-spinner').find('button').prop("disabled", false);
+		if (btn.attr('data-dir')== 'up') {
+			// input.val(parseInt(input.val())+1);
+			if ( input.attr('max') == undefined || parseInt(input.val()) < parseInt(input.attr('max')) ) {
+	            input.val(parseInt(input.val())+1);
+	        }else{
+	            btn.prop("disabled", true);
+	            clearInterval(action);
+	        }
+		}else{
+			if ( input.attr('min') == undefined || parseInt(input.val()) > parseInt(input.attr('min')) ) {
+	            input.val(parseInt(input.val())-1);
+	        }else{
+	            btn.prop("disabled", true);
+	            clearInterval(action);
+	        }
+		}
+	});
+
+	$(document).on('focusin','.input-number',function(){
+	    $(this).data('oldValue', $(this).val());
+	});
+
+	$(document).on('change','.input-number',function(){
+	    var prev = $(this).data('oldValue');
+	    var current = $(this).val();
+	    var nilai=$(this).attr('max');
+	   if(parseInt(current) > parseInt($(this).attr('max')) ||  parseInt(current) <= parseInt($(this).attr('min'))){
+	   	$(this).val(prev);
+	   }
+	});
+
+	// $(document).on('click','.force-stop',function(){
+		
+	// });
+
+	$(document).on('click','#tambahAnggota',function(){
+  		var parentClass=$(this).closest('.modal-content');
+		var data= parentClass.find(".select_one:checked").map(function(){
+      		return $(this).attr('json');
+    	}).get();
+
+    	if(data.length == 1){
+    		$('#id_anggota').val(JSON.parse(data[0]).id);
+    		$('#nama_anggota').val(JSON.parse(data[0]).nama_anggota);
+    		$('#modalAnggota').modal('hide');
+    	}else{
+    		$("#private-alert").css('display','block');
+    		$(".description").html('Pilih Hanya 1 (satu) Anggota!');
+   	 		$("#private-alert").delay( 10 ).fadeOut( 3000 ); 
+    	}
+	}); 
+
+	$('#sandbox-container .input-group.date').datepicker({
+        orientation: "bottom auto",
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        toggleActive: true,
+        todayHighlight: true
+    });
+
 });  
+
 </script>
+<style type="text/css">
+	#private-alert {
+    position: fixed;
+	display: none;
+    left: 15px;
+    top: 10%;
+    width: 95%;
+    /*height: 100%;*/
+    z-index:500;
+    /*background: url('../image/loading.gif') 50% 50% no-repeat rgb(249,249,249);*/
+    opacity: .8;
+    }
+</style>

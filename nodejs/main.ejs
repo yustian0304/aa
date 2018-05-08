@@ -16,4 +16,6 @@
 	<%- include views/peminjaman/index -%>
 <% } else if (render_view['view']==='create' && render_view['model']==='peminjaman'){ %>
 	<%- include views/peminjaman/create -%>
+<% } else if (render_view['view']=='update' && render_view['model']=='peminjaman'){ %>
+	<%- include views/peminjaman/update -%>
 <% } %>

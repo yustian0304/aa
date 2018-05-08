@@ -12,10 +12,10 @@ exports.home = function(req, res) {
 
 // Display list of all Authors.
 exports.index = function(req, res) {
-	db.query("SELECT * FROM buku", function (err, result, fields) {
+	db.query("SELECT * FROM buku where status !=0", function (err, result, fields) {
     if (err) throw err;
   		res.render('layout',{
-        'render_view'	 :{'model':'buku','view':'index'},
+        'render_view'	 :{'model':'buku','view':'index','msg':req.flash('info')},
         'result'     	:JSON.stringify(result),
   		});
      
