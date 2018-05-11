@@ -69,7 +69,7 @@
 			</table>
 	        <div class="modal-footer">
 	          <button type="submit" class="btn btn-default">Save</button>
-	          <a href="/anggota" type="button" class="btn btn-default">batal</a>
+	          <a href="/peminjaman" type="button" class="btn btn-default">batal</a>
 	        </div>
         </form>
 	</div>
@@ -213,7 +213,7 @@ $(document).ready(function () {
   								'<div class="input-group-btn data-dwn">'+
   									'<button class="btn btn-default" type="button" data-dir="dwn"><i class="glyphicon glyphicon-minus"></i></button>'+
 					      		'</div>'+
-								'<input type="text" class="input-number form-control text-center" name="jumlah[]" value="1" min="1" max="10">'+
+								'<input type="text" class="input-number form-control text-center" name="jumlah[]" value="1" min="1" max="10" onkeypress="return isNumberKey(event)">'+
 								'<div class="input-group-btn data-up">'+
   									'<button type="button" class="btn btn-default"  data-dir="up"><i class="glyphicon glyphicon-plus"></i></button>'+
 					      		'</div>'+
@@ -271,7 +271,7 @@ $(document).ready(function () {
 	    var prev = $(this).data('oldValue');
 	    var current = $(this).val();
 	    var nilai=$(this).attr('max');
-	   if(parseInt(current) > parseInt($(this).attr('max')) ||  parseInt(current) <= parseInt($(this).attr('min'))){
+	   if(parseInt(current) > parseInt($(this).attr('max')) ||  parseInt(current) < parseInt($(this).attr('min'))){
 	   	$(this).val(prev);
 	   }
 	});
@@ -306,7 +306,14 @@ $(document).ready(function () {
     });
 
 });  
-
+function isNumberKey(evt)
+{
+	var charCode = (evt.which) ? evt.which : evt.keyCode;
+	if (charCode != 46 && charCode > 31 
+	&& (charCode < 48 || charCode > 57))
+	return false;
+	return true;
+}
 </script>
 <style type="text/css">
 	#private-alert {

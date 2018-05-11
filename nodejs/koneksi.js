@@ -3,7 +3,8 @@ var connection = mysql.createConnection({
     host     : '127.0.0.1',
     user     : 'root',
     password : '',
-    database : 'angular_four'
+    database : 'angular_four',
+    multipleStatements: true
 });
 
 connection.connect(function(err) {

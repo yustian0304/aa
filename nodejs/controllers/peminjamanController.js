@@ -59,13 +59,12 @@ exports.book_create_post = function(req, res) {
     var no_faktur =req.body.no_faktur ;
     /*jumlah buku yang di pinjam*/
     var counter=req.body.id.length;
-    // console.log(req.body.jumlah[1]);
 
     var sql="insert into peminjaman (tanggal,no_faktur,id_anggota) values ('"+tanggal+"','"+no_faktur+"','"+id_anggota+"')";
       db.query(sql, function (err, result) {
       if (err) throw err;
       for (var i = 0; i < counter; i++) {
-          var sql_detail="insert into peminjaman_detail (id_buku,id_peminjaman,judul_buku,jumlah) values ('"+req.body.id[i]+"','"+req.body.id[i]+"','"+req.body.judul_buku[i]+"','"+req.body.jumlah[i]+"')";
+          var sql_detail="insert into peminjaman_detail (id_buku,id_peminjaman,judul_buku,jumlah) values ('"+req.body.id[i]+"','"+result.insertId+"','"+req.body.judul_buku[i]+"','"+req.body.jumlah[i]+"')";
               db.query(sql_detail, function (err, result) {
               if (err) throw err;
               });
@@ -94,36 +93,65 @@ exports.book_delete_post = function(req, res) {
 exports.book_update_get = function(req, res) {
     // res.send('NOT IMPLEMENTED: Author update GET');
   var id=req.params.id;
- db.query("select a.*, b.nama_anggota from peminjaman a  inner join anggota b on a.id_anggota=b.id where a.id=1",function (err, result) {
+    db.query("select a.*, b.nama_anggota from peminjaman a  inner join anggota b on a.id_anggota=b.id where a.id="+id+"",function (err, result) {
     if (err) throw err;
-
       db.query("select a.*,c.pengarang,c.penerbit from peminjaman_detail a"+
               " inner join peminjaman b on a.id_peminjaman=b.id"+
               " inner join buku c on a.id_buku=c.id"+
               " where id_peminjaman="+id+"",function (err, result_buku) {
       if (err) throw err;
-        res.render('layout',{
-              'render_view' :{'model':'peminjaman','view':'update','msg':req.flash('info')},
-              'result'      :result,
-              'resultBuku'  :JSON.stringify(result_buku),
-          });
-      // return JSON.stringify(result);
-    // console.log(result_anggota);
-      });
+              var sql_master="SELECT * FROM buku WHERE status !='0' ;SELECT * FROM anggota WHERE status !='0'";
+              db.query(sql_master,function (err, result_md) {
+              if (err) throw err;
+
+              res.render('layout',{
+                    'render_view'     :{'model':'peminjaman','view':'update','msg':req.flash('info')},
+                    'result'          :JSON.stringify(result),
+                    'resultBuku'      :JSON.stringify(result_buku),
+                    'result_md_buku'  :JSON.stringify(result_md[0]),
+                    'result_md_anggota'  :JSON.stringify(result_md[1]),
+                });
+                  
+              });
+      })
+
   }); 
 }
 
 // Handle Author update on POST.
 exports.book_update_post = function(req, res) {
-    // res.send('NOT IMPLEMENTED: Author update POST');
-  var id= req.body.id_buku;
-  var judul_buku =req.body.judul_buku ;
-  var pengarang =req.body.pengarang ;
-  var penerbit =req.body.penerbit ;
-  var tahun_terbit =req.body.tahun_terbit ;
-  var sql="update buku set judul_buku='"+judul_buku+"',pengarang='"+pengarang+"',penerbit='"+penerbit+"',tahun_terbit='"+tahun_terbit+"'  where id="+id+"";
+    // res.send('NOT IMPLEMENTED: Author update POST '+req.body.id_baru);
+    // console.log(req);
+  var id= req.body.id;
+  var id_anggota =req.body.id_anggota;
+  var tanggal =req.body.tanggal;
+
+  // var counter=req.body.id_detail.length;
+  // var counter1=req.body.id_baru.length;
+  var id_detail= req.body.id_detail;
+  var id_buku= req.body.id_buku;
+  var judul_buku= req.body.judul_buku;
+  var jumlah= req.body.jumlah;
+
+  var sql="update peminjaman set id_anggota='"+id_anggota+"',tanggal='"+tanggal+"' where id="+id+"";
     db.query(sql, function (err, result) {
     if (err) throw err;
-    res.redirect('/buku');
-  });
+         if(typeof req.body.id_detail!='undefined'){
+         for (var i = 0; i < req.body.id_detail.length; i++) {
+         sql_detail="update peminjaman_detail set id_buku= '"+id_buku[i]+"', judul_buku='"+judul_buku[i]+"', jumlah='"+jumlah[i]+"' where id='"+id_detail[i]+"'";
+           db.query(sql_detail, function (err, result) {
+              if (err) throw err;
+           });
+         }
+         }
+         if(typeof req.body.id_baru!='undefined'){
+         for (var i = 0; i < req.body.id_baru.length; i++) {
+         var sql_insert_detail="insert into peminjaman_detail (id_buku,id_peminjaman,judul_buku,jumlah) values ('"+req.body.id_baru[i]+"','"+id+"','"+req.body.judul_buku_baru[i]+"','"+req.body.jumlah_baru[i]+"')";
+              db.query(sql_insert_detail, function (err, result) {
+              if (err) throw err;
+              });
+          }
+          }
+    });
+    res.redirect('/peminjaman');
 };
