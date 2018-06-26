@@ -2,7 +2,7 @@ var express=require('express');
 var app=express();
 var path=require('path');
 var flash = require('connect-flash-plus');
-// var sessions=require('express-session');
+var sessions=require('express-session');
 // var cookieParser=require('cookie-parser');
 var http = require('http');
 var server = http.createServer(app);
@@ -34,12 +34,12 @@ return helper.function_dua(name);
 
 // app.use('requestTime');
 
-// app.use(sessions({
-//   secret: 'keyboard cat',
-//   cookie: { maxAge: 60000 },
-//   resave:false,
-//   saveUninitialized:true
-// }));
+app.use(sessions({
+  secret: 'keyboard cat',
+  cookie: { maxAge: 60000 },
+  resave:false,
+  saveUninitialized:true
+}));
  
 app.use(flash())
 
