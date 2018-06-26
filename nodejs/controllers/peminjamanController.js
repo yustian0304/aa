@@ -14,7 +14,7 @@ var db = require('../koneksi.js');
 exports.index = function(req, res) {
 	// res.send('NOT IMPLEMENTED: Author All');
   db.query("SELECT a.*,b.nama_anggota FROM peminjaman a "+
-           "inner join  anggota b on a.id_anggota =b.id", function (err, result, fields) {
+           "inner join  anggota b on a.id_anggota =b.id and a.status=1", function (err, result, fields) {
     if (err) throw err;
   		res.render('layout',{
         'render_view'	 :{'model':'peminjaman','view':'index','msg':req.flash('info')},
@@ -98,7 +98,7 @@ exports.book_update_get = function(req, res) {
       db.query("select a.*,c.pengarang,c.penerbit from peminjaman_detail a"+
               " inner join peminjaman b on a.id_peminjaman=b.id"+
               " inner join buku c on a.id_buku=c.id"+
-              " where id_peminjaman="+id+"",function (err, result_buku) {
+              " where id_peminjaman="+id+" and a.status!='0' and a.jumlah <> a.jumlah_kembali",function (err, result_buku) {
       if (err) throw err;
               var sql_master="SELECT * FROM buku WHERE status !='0' ;SELECT * FROM anggota WHERE status !='0'";
               db.query(sql_master,function (err, result_md) {
@@ -132,13 +132,14 @@ exports.book_update_post = function(req, res) {
   var id_buku= req.body.id_buku;
   var judul_buku= req.body.judul_buku;
   var jumlah= req.body.jumlah;
+  var status= req.body.status;
 
   var sql="update peminjaman set id_anggota='"+id_anggota+"',tanggal='"+tanggal+"' where id="+id+"";
     db.query(sql, function (err, result) {
     if (err) throw err;
          if(typeof req.body.id_detail!='undefined'){
          for (var i = 0; i < req.body.id_detail.length; i++) {
-         sql_detail="update peminjaman_detail set id_buku= '"+id_buku[i]+"', judul_buku='"+judul_buku[i]+"', jumlah='"+jumlah[i]+"' where id='"+id_detail[i]+"'";
+         sql_detail="update peminjaman_detail set id_buku= '"+id_buku[i]+"', judul_buku='"+judul_buku[i]+"', jumlah='"+jumlah[i]+"', status='"+status[i]+"' where id='"+id_detail[i]+"'";
            db.query(sql_detail, function (err, result) {
               if (err) throw err;
            });

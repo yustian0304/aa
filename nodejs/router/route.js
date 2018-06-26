@@ -3,12 +3,17 @@ var express = require('express');
 // var app=express();
 var router = express.Router();
 // var bodyParser=require('body-parser');
+var home_controller = require('../controllers/homeController');
 var book_controller = require('../controllers/bukuController');
 var anggota_controller = require('../controllers/anggotaController');
 var peminjaman_controller = require('../controllers/peminjamanController');
+var pengembalian_controller = require('../controllers/pengembalianController');
 
 /*home all*/
-router.get('/', book_controller.home);
+router.get('/', home_controller.book_login);
+router.post('/home/check_login', home_controller.book_check_login);
+router.get('/home/check_logout', home_controller.book_check_logout);
+router.get('/home', home_controller.home);
 
 /*list buku*/
 router.get('/buku', book_controller.index);
@@ -95,6 +100,33 @@ router.get('/peminjaman/:id/update', peminjaman_controller.book_update_get);
 
 // POST request to update Book.
 router.post('/peminjaman/:id/update', peminjaman_controller.book_update_post);
+
+
+/*===============PEMINJAMAN===============*/
+
+/*list anggota*/
+router.get('/pengembalian', pengembalian_controller.index);
+
+// GET request for creating a Book. NOTE This must come before routes that display Book (uses id).
+// router.get('/peminjaman/create', peminjaman_controller.book_create_get);
+
+// // // POST request for creating Book.
+router.get('/pengembalian/book_detail', pengembalian_controller.book_detail);
+
+// /*GET one record*/
+// router.get('/peminjaman/:id', peminjaman_controller.book_detail);
+
+// // GET request to delete Book.
+// router.get('/peminjaman/:id/delete', peminjaman_controller.book_delete_get);
+
+// // POST request to delete Book.
+// router.post('/peminjaman/:id/delete', peminjaman_controller.book_delete_post);
+
+// // GET request to update Book.
+router.get('/pengembalian/:id/update', pengembalian_controller.book_update_get);
+
+// // POST request to update Book.
+router.post('/pengembalian/:id/update', pengembalian_controller.book_update_post);
 
 // // GET request to doenload Book.
 // router.get('/peminjaman/:id/download', peminjaman_controller.book_download_file);

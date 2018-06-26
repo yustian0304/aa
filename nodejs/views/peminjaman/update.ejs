@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-info">
     <div class="panel-heading">Panel Heading</div>
 	<div class="panel-body">
 		<form  action="" method="POST" id="update_anggota" class="form-horizontal">
@@ -75,6 +75,7 @@
 				<tbody class="tmp_buku">
 					<% 
 						no=1;
+						if(resultBuku.length > 2){
 						data=JSON.parse(resultBuku) 
 						for(value in data){
 					%>
@@ -96,13 +97,14 @@
 								</div>
 							</div>		
 						</td>
-						<td style="width:10%;text-align:center;">
-							<button type="button" class="btn btn-warning btn-xs" id="hapus">
+						<td style="width:10%;text-align:center;"><input type="hidden" class="form-control text-center status_counter<%= no %>" name="status[]" value="<%= data[value].status %>">
+							<button type="button" class="btn btn-warning btn-xs hapus" rel="status_counter<%= no %>" data-toggle="modal" data-target="#hapus_modal" data-backdrop="static" data-keyboard="false">
   								<span class="glyphicon glyphicon-trash"></span> Hapus
   							</button>
   						</td>
 					</tr>
-					<% no++; } %>
+					<% no++; } 
+						} %>
 				</tbody>
 			</table>
 
@@ -201,6 +203,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="hapus_modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <form  action="" method="POST" id="confirm_modal">
+        <div class="modal-body">
+	          <p>Apakah Anda yakin kan menghapus data ini?
+	          	<input type="hidden" name="id_hapus_detail" value="" id="id_hapus_detail"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="hapus_detail">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">batal</button>
+        </div>
+        </form>
+      </div>
+      
+    </div>
+</div>
+
 <script type="text/javascript">
 function isNumberKey(evt)
 {
@@ -223,6 +248,17 @@ $(document).ready( function(){
       		"orderable": false,
     	}]
 	});
+
+	$('.select_all').on('click', function () {
+	    $(this).closest('table').find('tbody :checkbox')
+	      .prop('checked', this.checked)
+	      .closest('tr').toggleClass('selected', this.checked);
+	  });
+
+	  $('tbody :checkbox').on('click', function () {
+	    $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+	    $(this).closest('table').find('.select_all').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .select_all
+	  });
 
 	$(document).on('mousedown','.number-spinner button',function(){
 		var btn  =$(this);
@@ -301,6 +337,17 @@ $(document).ready( function(){
 	}
 	$('#myModal').modal('hide');
   	});
+
+  	$(document).on('click','.hapus',function(){
+		var classnya=$(this).attr('rel');
+		$('#id_hapus_detail').val(classnya);
+
+	}).on('click','#hapus_detail',function(){
+		var class_hapusnya=$('#id_hapus_detail').val();
+		$('.'+class_hapusnya).val(0);
+		$('.'+class_hapusnya).closest('tr').css('display','none');
+		$('#hapus_modal').modal('hide');
+	});
 
   	$(document).on('click','#tambahAnggota',function(){
   		var parentClass=$(this).closest('.modal-content');

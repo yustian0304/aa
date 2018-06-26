@@ -1,0 +1,74 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Dashboard</div>
+	<div class="panel-body">
+		  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+	</div>
+</div>
+<script src="http://localhost:3000/js/socket.io/socket.io.js"></script>
+<script>
+window.onload = function () {
+
+$(document).on('click','#cek',function(){
+	
+});
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	title: {
+		text: "Temperature of Each Boiler"
+	},
+	axisY: {
+		title: "Temperature (°C)",
+		suffix: " °C"
+	},
+	data: [{
+		type: "column",	
+		yValueFormatString: "#,### °C",
+		indexLabel: "{y}",
+		dataPoints: [
+			{ label: "boiler1", y: 106 },
+			{ label: "boiler2", y: 163 },
+			{ label: "boiler3", y: 154 },
+			{ label: "boiler4", y: 176 },
+			{ label: "boiler5", y: 184 },
+			{ label: "boiler6", y: 122 }
+		]
+	}]
+});
+
+function updateChart() {
+	var nilai=$('#cek').attr('rel');
+	var boilerColor, deltaY, yVal;
+	var dps = chart.options.data[0].dataPoints;
+	var socket= io.connect();
+	socket.on('news', function (data) {
+
+    console.log(data['hello']);
+	for (var i = 0; i < dps.length; i++) {
+		// deltaY = dps[i].y;
+		yVal =data['hello'][i];
+		// yVal = parseInt(nilai<10) ? parseInt(dps[i].y) : parseInt(nilai);
+		boilerColor = yVal > 200 ? "#FF2500" : yVal >= 170 ? "#FF6000" : yVal < 170 ? "#6B8E23 " : null;
+		dps[i] = {label: "Boiler "+(i+1) , y: yVal, color: boilerColor};
+	}
+	chart.options.data[0].dataPoints = dps; 
+	chart.render();
+ });
+// }
+}
+
+updateChart();
+
+setInterval(function() {updateChart()}, 500);
+
+}
+</script>
+<script>
+	// $(function(){
+	// 	var socket= io.connect();
+	// 		socket.on('news', function (data) {
+	// 	    console.log(data);
+	// 	 });
+	// });
+
+</script>
+

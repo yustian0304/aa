@@ -2,25 +2,56 @@ var express=require('express');
 var app=express();
 var path=require('path');
 var flash = require('connect-flash-plus');
-var sessions=require('express-session');
-var cookieParser=require('cookie-parser');
+// var sessions=require('express-session');
+// var cookieParser=require('cookie-parser');
+var http = require('http');
+var server = http.createServer(app);
 
+var io = require('socket.io').listen(server);
+var path = require('path');
+// var mysql = require('mysql');
+// var connection = mysql.createConnection({
+//     host     : '127.0.0.1',
+//     user     : 'root',
+//     password : '',
+//     database : 'angular_four',
+//     multipleStatements: true
+// });
 
-app.use(sessions({
-  secret: 'keyboard cat',
-  cookie: { maxAge: 60000 },
-  resave:false,
-  saveUninitialized:true
-}));
+// connection.connect(function(err) {
+//     if (err) throw err;
+// });
+// var db = require('koneksi').listen(server);
+// var fs = require('fs');
+
+app.locals.someHelper = function(name) {
+return helper.function_dua(name);
+}
+
+// helper.function_dua();
+// console.log(helper.function_dua());
+// ejs.render(ejstxt,{ _ : helper });
+
+// app.use('requestTime');
+
+// app.use(sessions({
+//   secret: 'keyboard cat',
+//   cookie: { maxAge: 60000 },
+//   resave:false,
+//   saveUninitialized:true
+// }));
  
 app.use(flash())
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use( express.static( "protect" ) );
+// app.use(express.static(path.join(__dirname, 'protect')));
 app.set('views', path.join(__dirname, 'views'));
 
 // var fs=require('fs');
 var bodyParser=require('body-parser');
-var buku = require('./router/route');
+var home = require('./router/route');
+var helper = require('./helper/helper');
 // var router=express.Router();
 // var session;
 
@@ -36,8 +67,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 
 app.set('view engine', 'ejs');
-app.use('/',buku);
-app.use('/buku',buku);
+app.use('/',home);
+// app.use('/pengembalian',helper);
+// app.use('/buku',buku);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -101,7 +133,20 @@ app.use(function(err, req, res, next) {
 // 		res.sendFile('404.html',{root :path.join(__dirname, './files')});
 // 	}
 // });
-app.listen(3000,function(){
+
+io.on('connection', function (socket) {
+   // connection.query("SELECT * FROM buku", function (err, result, fields) {
+    // if (err) throw err;
+   
+  var data=[39,20,20,50,20,30];
+  socket.emit('news', { hello: data });
+  // socket.on('my other event', function (data) {
+  //   console.log(data);
+  // });
+  // });
+});
+
+server.listen(3000,function(){
 console.log('running in port 3000');
 // console.log(__dirname);
 });

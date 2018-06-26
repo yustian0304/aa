@@ -34,9 +34,15 @@
 			    <label class="control-label col-sm-2" for="foto">Foto</label>
 			    <% if (result[0].foto!=''){ %>
 			    <div class="col-sm-1">
-			    	<a href="/anggota/<%= result[0].id %>/download"><span class="glyphicon glyphicon-file" style="font-size: 18px;"></span></a>
+			    	<a href="/anggota/<%= result[0].id %>/download">
+			    		<img src="/<%= result[0].foto %>" class="img-circle" alt="User Image" style="width: 90px; height: 90px;">
+			    	</a>
 			    </div>
 			    <% } %>
+			</div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="no_telepon"></label>
 			    <div class="col-sm-9">
         		  <input type="hidden" name="foto_old" value="<%= result[0].foto %>" id="foto_old">
         		  <input type="file" name="foto" value="<%= result[0].foto %>" id="foto">

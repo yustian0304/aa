@@ -1,5 +1,7 @@
-<% if(render_view['view']==='home' && render_view['model']==='buku'){ %>
-	<%= 'ini halaman home' %>
+<% if(render_view['view']==='home' && render_view['model']==='home'){ %>
+	<% include views/home %>
+<% }else if(render_view['view']==='login' && render_view['model']==='home'){ %>
+	<% include views/login %>
 <% } else if (render_view['view']==='update' && render_view['model']==='buku'){ %>
 	<% include views/buku/update %>
 <% } else if (render_view['view']==='create' && render_view['model']==='buku'){ %>
@@ -18,4 +20,8 @@
 	<% include views/peminjaman/create %>
 <% } else if (render_view['view']==='update' && render_view['model']==='peminjaman'){ %>
 	<% include views/peminjaman/update %>
+<% } else if (render_view['view']==='index' && render_view['model']==='pengembalian'){ %>
+	<% include views/pengembalian/index %>
+<% } else if (render_view['view']==='update' && render_view['model']==='pengembalian'){ %>
+	<% include views/pengembalian/update %>
 <% } %>

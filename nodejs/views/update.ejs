@@ -1,0 +1,74 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Panel Heading</div>
+	<div class="panel-body">
+		<form  action="" method="POST" id="update_anggota" class="form-horizontal">
+        	<div class="form-group" style="display: none;">
+			    <label class="control-label col-sm-2" for="id">Id</label>
+			    <div class="col-sm-10">
+        		  <input type="text" class="form-control" name="id" value="<%= result[0].id %>" id="id">
+			    </div>
+			</div>
+
+			<div class="form-group" style="display: none;">
+			    <label class="control-label col-sm-2" for="id_anggota">Id Anggota</label>
+			    <div class="col-sm-10">
+        		  <input type="text" class="form-control" name="id_anggota" value="<%= result[0].id_anggota %>" id="id_anggota">
+			    </div>
+			</div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="nama_anggota">Nama Anggota</label>
+			    <div class="col-sm-10">
+        		  <input type="text" class="form-control" name="nama_anggota" value="<%= result[0].nama_anggota %>" id="nama_anggota">
+			    </div>
+			</div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="tanggal">Tanggal</label>
+			    <div class="col-sm-10">
+        		  <input type="text" class="form-control" name="tanggal" value="<%= new Date(data[value].tanggal).toISOString().replace(/T/, ' ').replace(/\..+/, '') %>" id="tanggal">
+			    </div>
+			</div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="no_faktur">No Telepon</label>
+			    <div class="col-sm-10">
+        		  <input type="text" class="form-control" name="no_faktur" value="<%= result[0].no_faktur %>" id="no_faktur">
+			    </div>
+			</div>
+
+			<table class="table table-bordered table-hover">
+				<thead>
+					<th>No</th>
+					<th>Judul Buku</th>
+					<th>Pengarang</th>
+					<th>Penerbit</th>
+					<th style="text-align:center;">jumlah</th>
+					<th style="text-align:center;">aksi</th>
+				</thead>
+				<tbody class="tmp_buku">
+					<% 
+						o=1;
+						data=JSON.parse(resultBuku) 
+						for(value in data){
+					%>
+					<tr>
+						<td><%= no %></td>
+						<td><%= data[value].judul_buku %></td>
+						<td><%= data[value].pengarang %></td>
+						<td><%= data[value].penerbit %></td>
+						<td><%= data[value].jumlah %></td>
+						<td></td>
+					</tr>
+					<% no++; } %>
+				</tbody>
+			</table>
+			  
+	        <div class="modal-footer">
+	          <button type="submit" class="btn btn-default">Save</button>
+	          <a href="/peminjaman" type="button" class="btn btn-default">batal</a>
+	        </div>
+        </form>
+	</div>
+</div>
+

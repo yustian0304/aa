@@ -1,0 +1,407 @@
+<div class="panel panel-warning">
+    <div class="panel-heading">Pengembalian Buku</div>
+	<div class="panel-body">
+		<form  action="" method="POST" id="update_anggota" class="form-horizontal">
+			<% data_header=JSON.parse(result);%>
+        	<div class="form-group" style="display: none;">
+			    <label class="control-label col-sm-2" for="id">Id</label>
+			    <div class="col-sm-10">
+        		  <input type="text" class="form-control" name="id" value="<%= data_header[0].id %>" id="id">
+			    </div>
+			</div>
+
+			<div class="form-group" style="display: none;">
+			    <label class="control-label col-sm-2" for="id_anggota">Id Anggota</label>
+			    <div class="col-sm-10">
+        		  <input type="text" class="form-control" name="id_anggota" value="<%= data_header[0].id_anggota %>" id="id_anggota">
+			    </div>
+			</div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="nama_anggota">Nama Anggota</label>
+			    <div class="col-sm-4">
+        		  <div class="input-group">
+        		  		<input type="text" class="form-control" name="nama_anggota" value="<%= data_header[0].nama_anggota %>" id="nama_anggota" data-toggle="modal" data-target="#modalAnggota" data-backdrop="static" data-keyboard="false" readonly="readonly">
+					   	<div class="input-group-btn">
+					      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalAnggota" data-backdrop="static" data-keyboard="false" >
+					        <i class="glyphicon glyphicon-user"></i>
+					      </button>
+					    </div>
+				  </div>
+			    </div>
+			</div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="tanggal">Tanggal</label>
+			    <div class="span3 col-md-3" id="sandbox-container">
+			    	<div class="input-group date">
+  					<input type="text" class="form-control" name="tanggal" value="<%= new Date(data_header[0].tanggal).toISOString().replace(/T/, ' ').replace(/\..+/, '') %>" id="tanggal">
+  					<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="no_faktur">No Faktur</label>
+			    <div class="col-sm-4">
+        		  <input type="text" class="form-control" name="no_faktur" value="<%= data_header[0].no_faktur %>" id="no_faktur" readonly="readonly">
+			    </div>
+			</div>
+
+			<div class="form-group">
+			    <label class="control-label col-sm-2" for="id_buku_tmp">Buku</label>
+			    <div class="col-sm-4">
+			      <div class="input-group">
+        		  		<input type="text" class="form-control" name="id_buku_tmp" value="" id="id_buku_tmp" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" readonly="readonly">
+					   	<div class="input-group-btn">
+					      <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false">
+					        <i class="glyphicon glyphicon-book"></i>
+					      </button>
+					    </div>
+				  </div>
+			    </div>
+			</div>
+
+
+			<table class="table table-bordered table-hover">
+				<thead>
+					<th>No</th>
+					<th>Judul Buku</th>
+					<th>Pengarang</th>
+					<th>Penerbit</th>
+					<th style="text-align:center;">Jumlah Pinjam</th>
+					<th style="text-align:center;">sisa</th>
+					<th style="text-align:center;">Jumlah Kembali</th>
+					<th style="text-align:center;">Aksi</th>
+				</thead>
+				<tbody class="tmp_buku">
+					<% 
+						no=1;
+						if(resultBuku.length > 2){
+						data=JSON.parse(resultBuku) 
+						for(value in data){
+					%>
+					<tr>
+						<td><input type="hidden" class="input-number form-control text-center" name="id_detail[]" value="<%= data[value].id %>"><%= no %></td>
+						<td><input type="hidden" class="input-number form-control text-center" name="id_buku[]" value="<%= data[value].id_buku %>"><%= data[value].judul_buku %></td>
+						<td><input type="hidden" class="input-number form-control text-center" name="judul_buku[]" value="<%= data[value].judul_buku %>"><%= data[value].pengarang %></td>
+						<td><%= data[value].penerbit %></td>
+						<td style="text-align:center;"><%= data[value].jumlah %></td>
+						<td style="text-align:center;"><%= data[value].result_jumlah %></td>
+						<td style="width:17%; text-align:center;">
+							<div style="padding-left: 5px;padding-right: 5px;">
+	  							<div class="input-group number-spinner">
+	  								<div class="input-group-btn data-dwn">
+	  									<button class="btn btn-default" type="button" data-dir="dwn"><i class="glyphicon glyphicon-minus"></i></button>
+						      		</div>
+									<input type="text" class="input-number form-control text-center" name="jumlah[]" value="<%= data[value].result_jumlah %>" min="1" max="<%= data[value].result_jumlah %>" onkeypress="return isNumberKey(event)" readonly>
+									<div class="input-group-btn data-up">
+	  									<button type="button" class="btn btn-default"  data-dir="up"><i class="glyphicon glyphicon-plus"></i></button>
+						      		</div>
+								</div>
+							</div>		
+						</td>
+						<td style="width:10%;text-align:center;"><input type="hidden" class="form-control text-center status_counter<%= no %>" name="status[]" value="<%= data[value].status %>">
+							<button type="button" class="btn btn-warning btn-xs hapus" rel="status_counter<%= no %>" data-toggle="modal" data-target="#hapus_modal" data-backdrop="static" data-keyboard="false" data-dir="kembalikan">
+  								<span class="fa fa-reply"></span> Kembalikan
+  							</button>
+  						</td>
+					</tr>
+					<% no++; } 
+						} %>
+				</tbody>
+			</table>
+
+			<div class="modal-footer">
+	          <button type="submit" class="btn btn-default">Save</button>
+	          <a href="/pengembalian" type="button" class="btn btn-default">batal</a>
+	        </div>
+
+		</form>
+	</div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Buku</h4>
+        </div>
+        <div class="modal-body">
+	          <p>
+	          	<table class="table table-bordered table-hover" id="table_buku">
+					<thead>
+						<th style="width:4%; text-align:center;">No</th>
+						<th>Judul Buku</th>
+						<th style="width:10%; text-align:center;"><input type="checkbox" name="ck_buku" class="select_all"></th>
+					</thead>
+					<tbody class="modal_buku">
+						<% 
+							no=1;
+							data_md_buku=JSON.parse(result_md_buku); 
+							for(value_md_buku in data_md_buku){ %>
+						<tr>
+							<td style="width:4%; text-align:center;"><%= no %></td>
+							<td><%= data_md_buku[value_md_buku].judul_buku%></td>
+							<td style="width:10%; text-align: center; vertical-align: middle;"><input type="checkbox" name="ck_buku" class="select_one"  value="<%= data[value].id %>" json="<%= JSON.stringify(data_md_buku[value_md_buku]) %>"></td>
+						</tr>
+						<% no++; } %>
+					</tbody>
+				</table>
+	          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="tambahBuku">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">batal</button>
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+<div class="modal fade" id="modalAnggota" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Anggota</h4>
+        </div>
+        <div class="modal-body" id="bd_modal_anggota">
+	          	<div class="alert alert-danger fade" id="private-alert">
+				    <strong>Warning!</strong><span class="description"></span>
+				</div>
+
+	          <p>
+	          	<table class="table table-bordered table-hover" id="table_anggota">
+					<thead>
+						<th style="width:4%; text-align:center;">No</th>
+						<th>Nama Anggota</th>
+						<th style="width:10%; text-align:center;"><input type="checkbox" name="ck_anggota" class="select_all"></th>
+					</thead>
+					<tbody class="modal_buku">
+						<% 
+							no=1;
+							data_md_anggota=JSON.parse(result_md_anggota); 
+							for(value_md_anggota in data_md_anggota){ %>
+						<tr>
+							<td style="width:4%; text-align:center;"><%= no %></td>
+							<td><%= data_md_anggota[value_md_anggota].nama_anggota %></td>
+							<td style="width:10%; text-align: center; vertical-align: middle;"><input type="checkbox" name="ck_buku" class="select_one"  value="<%= data_md_anggota[value_md_anggota].id %>" json="<%= JSON.stringify(data_md_anggota[value_md_anggota]) %>"></td>
+						</tr>
+						<% no++; } %>
+					</tbody>
+				</table>
+	          </p>
+				 	
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="tambahAnggota" data-toggle="alert" data-target="#private-alert">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">batal</button>
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+<div class="modal fade" id="hapus_modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <form  action="" method="POST" id="confirm_modal">
+        <div class="modal-body">
+	          <p>Apakah Anda yakin akan mengembalikan Buku ini?
+	          	<input type="hidden" name="id_kembali_detail" value="" id="id_kembali_detail"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" id="kembali_detail">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">batal</button>
+        </div>
+        </form>
+      </div>
+      
+    </div>
+</div>
+
+<script type="text/javascript">
+function isNumberKey(evt)
+{
+	var charCode = (evt.which) ? evt.which : evt.keyCode;
+	if (charCode != 46 && charCode > 31 
+	&& (charCode < 48 || charCode > 57))
+	return false;
+	return true;
+}
+$(document).ready( function(){
+	$('#table_buku').DataTable({
+	    "columnDefs": [ {
+      		"targets"  : 2,
+      		"orderable": false,
+    	}]
+	});
+	$('#table_anggota').DataTable({
+		"columnDefs": [ {
+      		"targets"  : 2,
+      		"orderable": false,
+    	}]
+	});
+
+	$('.select_all').on('click', function () {
+	    $(this).closest('table').find('tbody :checkbox')
+	      .prop('checked', this.checked)
+	      .closest('tr').toggleClass('selected', this.checked);
+	  });
+
+	  $('tbody :checkbox').on('click', function () {
+	    $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+	    $(this).closest('table').find('.select_all').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .select_all
+	  });
+
+	$(document).on('mousedown','.number-spinner button',function(){
+		var btn  =$(this);
+		var input= $(this).closest('.number-spinner').find('input');
+		 btn.closest('.number-spinner').find('button').prop("disabled", false);
+		if (btn.attr('data-dir')== 'up') {
+			// input.val(parseInt(input.val())+1);
+			if ( input.attr('max') == undefined || parseInt(input.val()) < parseInt(input.attr('max')) ) {
+	            input.val(parseInt(input.val())+1);
+	        }else{
+	            btn.prop("disabled", true);
+	            clearInterval(action);
+	        }
+		}else{
+			if ( input.attr('min') == undefined || parseInt(input.val()) > parseInt(input.attr('min')) ) {
+	            input.val(parseInt(input.val())-1);
+	        }else{
+	            btn.prop("disabled", true);
+	            clearInterval(action);
+	        }
+		}
+	});
+
+	$(document).on('focusin','.input-number',function(){
+	    $(this).data('oldValue', $(this).val());
+	});
+
+	$(document).on('change','.input-number',function(){
+	    var prev = $(this).data('oldValue');
+	    var current = $(this).val();
+	    var nilai=$(this).attr('max');
+	   if(parseInt(current) > parseInt($(this).attr('max')) ||  parseInt(current) <= parseInt($(this).attr('min'))){
+	   	$(this).val(prev);
+	   }
+	});
+
+	$('#sandbox-container .input-group.date').datepicker({
+        orientation: "bottom auto",
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        toggleActive: true,
+        todayHighlight: true
+    });
+
+	$(document).on('click','#tambahBuku',function(){
+  	var parentClass=$(this).closest('.modal-content');
+  	var myArray=parentClass.find(".select_one:checked").map(function(){
+      return $(this).attr('json');
+    }).get();
+
+	// alert(pecah[0]);
+	for (var i = 0; i < myArray.length; i++) {
+  	var data=JSON.parse(myArray[i]);
+  	// alert(data.judul_buku);
+  	$('.tmp_buku').append('<tr>'+
+  					'<td><input type="hidden" name="id_baru[]" value="'+data.id+'"></td>'+
+  					'<td><input type="hidden" name="judul_buku_baru[]" value="'+data.judul_buku+'">'+data.judul_buku+'</td>'+
+  					'<td>'+data.pengarang+'</td>'+
+  					'<td>'+data.penerbit+'</td>'+
+  					'<td style="width:17%; text-align:center;">'+
+  						'<div style="padding-left: 5px;padding-right: 5px;">'+
+  							'<div class="input-group number-spinner">'+
+  								'<div class="input-group-btn data-dwn">'+
+  									'<button class="btn btn-default" type="button" data-dir="dwn"><i class="glyphicon glyphicon-minus"></i></button>'+
+					      		'</div>'+
+								'<input type="text" class="input-number form-control text-center" name="jumlah_baru[]" value="1" min="1" max="10" onkeypress="return isNumberKey(event)">'+
+								'<div class="input-group-btn data-up">'+
+  									'<button type="button" class="btn btn-default"  data-dir="up"><i class="glyphicon glyphicon-plus"></i></button>'+
+					      		'</div>'+
+							'</div>'+
+						'</div>'+	
+  					'</td>'+
+  					'<td style="width:10%;text-align:center;"><button type="button" class="btn btn-warning btn-xs" id="hapus">'+
+  					'<span class="glyphicon glyphicon-trash"></span> Hapus</button></td>'+
+  			 '</tr>');
+	}
+	$('#myModal').modal('hide');
+  	});
+
+  	$(document).on('click','.hapus',function(){
+		var classnya=$(this).attr('rel');
+		$('#id_kembali_detail').val(classnya);
+	}).on('click','#kembali_detail',function(){
+		var class_hapusnya=$('#id_kembali_detail').val();
+		var cek_data=$('.'+class_hapusnya).closest('tr').find('.hapus').attr('data-dir');
+	if(cek_data=='kembalikan'){
+		$('.'+class_hapusnya).closest('tr').find('.hapus').html('<span class="fa fa-reply"></span> Batal');
+		$('.'+class_hapusnya).closest('tr').find('.hapus').attr('data-dir','batal');
+		$('.'+class_hapusnya).closest('tr').find('.data-dwn').find('.btn').prop("disabled", true);
+		$('.'+class_hapusnya).closest('tr').find('.data-up').find('.btn').prop("disabled", true);
+	}else{
+		$('.'+class_hapusnya).closest('tr').find('.hapus').html('<span class="fa fa-reply"></span> Kembalikan');
+		$('.'+class_hapusnya).closest('tr').find('.hapus').attr('data-dir','kembalikan');
+		$('.'+class_hapusnya).closest('tr').find('.data-dwn').find('.btn').prop("disabled", false);
+		$('.'+class_hapusnya).closest('tr').find('.data-up').find('.btn').prop("disabled", false);
+	}
+		
+		$('#hapus_modal').modal('hide');
+	});
+
+  	$(document).on('click','#tambahAnggota',function(){
+  		var parentClass=$(this).closest('.modal-content');
+		var data= parentClass.find(".select_one:checked").map(function(){
+      		return $(this).attr('json');
+    	}).get();
+
+    	if(data.length == 1){
+    		$('#id_anggota').val(JSON.parse(data[0]).id);
+    		$('#nama_anggota').val(JSON.parse(data[0]).nama_anggota);
+    		$('#modalAnggota').modal('hide');
+    	}else{
+    		$("#private-alert").css('display','block');
+    		$(".description").html('Pilih Hanya 1 (satu) Anggota!');
+   	 		$("#private-alert").delay( 10 ).fadeOut( 3000 ); 
+    	}
+	});
+
+	$("#myModal").on("hidden.bs.modal", function() {
+		// $(this).find("input,textarea,select").val('').end();   
+		$(this).find(".select_one,.select_all").prop('checked',false).end();   
+	});
+
+	$("#modalAnggota").on("hidden.bs.modal", function() {
+		// $(this).find("input,textarea,select").val('').end();   
+		$(this).find(".select_one,.select_all").prop('checked',false).end();   
+	});
+});
+</script>
+<style type="text/css">
+	#private-alert {
+    position: fixed;
+	display: none;
+    left: 15px;
+    top: 10%;
+    width: 95%;
+    /*height: 100%;*/
+    z-index:500;
+    /*background: url('../image/loading.gif') 50% 50% no-repeat rgb(249,249,249);*/
+    opacity: .8;
+    }
+</style>
+
